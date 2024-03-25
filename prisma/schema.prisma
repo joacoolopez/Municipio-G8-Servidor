@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+// Definición de la tabla barrios
+
+// Definición de la tabla vecinos
+model Vecinos {
+  documento     String      @id @unique
+  nombre        String
+  apellido      String
+  direccion     String?
+  codigoBarrio  Int?
+  barrio        Barrios?    @relation(fields: [codigoBarrio], references: [idBarrio])
+  reclamos      Reclamos[]
+  denuncias     Denuncias[]
+  vecinoUser    VecinoUser[]
+}
+
+// Definición de la tabla personal
+model Personal {
+  legajo         Int         @id @default(autoincrement())
+  nombre         String
+  apellido       String
+  documento      String
+  password       String
+  sector         String
+  categoria      Int?
+  fechaIngreso   DateTime?
+  reclamos       Reclamos[]
+}
+
+// Definición de la tabla sitios
+model Sitios {
+  idSitio        Int         @id @default(autoincrement())
+  latitud        Float?
+  longitud       Float?
+  calle          String?
+  numero         Int?
+  entreCalleA    String?
+  entreCalleB    String?
+  descripcion    String
+  aCargoDe       String
+  apertura       String?
+  cierre         String?
+  comentarios    String?
+  reclamos       Reclamos[]
+  denuncias      Denuncias[]
+}
+
+// Definición de la tabla rubros
+model Rubros {
+  idRubro        Int         @id @default(autoincrement())
+  descripcion    String
+  desperfectos   Desperfectos[]
+}
+
+// Definición de la tabla desperfectos
+model Desperfectos {
+  idDesperfecto  Int         @id @default(autoincrement())
+  descripcion    String
+  idRubro        Int
+  rubro          Rubros      @relation(fields: [idRubro], references: [idRubro])
+  reclamos       Reclamos[]
+}
+
+// Definición de la tabla reclamos
+
+model Reclamos {
+  idReclamo          Int         @id @default(autoincrement())
+  documento          String?
+  legajo             Int?
+  idSitio            Int
+  idDesperfecto      Int?
+  descripcion        String?
+  estado             String
+  IdReclamoUnificado Int?
+  vecinos            Vecinos?    @relation(fields: [documento], references: [documento])
+  personal           Personal?   @relation(fields: [legajo], references: [legajo])
+  sitios             Sitios      @relation(fields: [idSitio], references: [idSitio])
+  desperfectos       Desperfectos? @relation(fields: [idDesperfecto], references: [idDesperfecto])
+  movimientosReclamo MovimientosReclamo[]
+}
+
+// Definición de la tabla movimientosReclamo
+model MovimientosReclamo {
+  idMovimiento  Int         @id @default(autoincrement())
+  idReclamo     Int
+  responsable   String
+  causa         String
+  fecha         DateTime    @default(now())
+  reclamos      Reclamos    @relation(fields: [idReclamo], references: [idReclamo])
+}
+
+// Definición de la tabla denuncias
+model Denuncias {
+  idDenuncias           Int         @id @default(autoincrement())
+  documento             String
+  idSitio               Int?
+  descripcion           String?
+  estado                String?
+  aceptaResponsabilidad Int
+  vecinos               Vecinos     @relation(fields: [documento], references: [documento])
+  sitios                Sitios?     @relation(fields: [idSitio], references: [idSitio])
+  movimientosDenuncia   MovimientosDenuncia[]
+}
+
+// Definición de la tabla movimientosDenuncia
+model MovimientosDenuncia {
+  idMovimiento  Int         @id @default(autoincrement())
+  idDenuncia    Int
+  responsable   String
+  causa         String
+  fecha         DateTime    @default(now())
+  denuncias     Denuncias    @relation(fields: [idDenuncia], references: [idDenuncias])
+}
+
+// Definición de la tabla barrios
+model Barrios {
+  idBarrio  Int         @id @default(autoincrement())
+  nombre    String
+  vecinos   Vecinos[]   // Relación bidireccional con Vecinos
+}
+
+model VecinoUser {
+  documentoVecino String @id
+  password String?
+  habilitado Boolean @default(false)
+  passwordActiva Boolean @default(false)
+  vecinos Vecinos @relation(fields: [documentoVecino], references: [documento])
+
+}
