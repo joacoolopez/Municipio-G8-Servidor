@@ -27,6 +27,9 @@ model Vecinos {
   reclamos      Reclamos[]
   denuncias     Denuncias[]
   vecinoUser    VecinoUser[]
+  vecinoServicios VecinoServicios[]
+  vecinoComercios VecinoComercios[]
+
 }
 
 // Definición de la tabla personal
@@ -141,4 +144,27 @@ model VecinoUser {
   passwordActiva Boolean @default(false)
   vecinos Vecinos @relation(fields: [documentoVecino], references: [documento])
 
+}
+
+model VecinoServicios {
+  idServicio String  @id
+  documentoVecino String
+  vecinos Vecinos @relation(fields: [documentoVecino], references: [documento])
+  tituloServicio String
+  contacto String
+  horaApertura String
+  horaCierre String
+  descripcion String
+  habilitado Boolean @default(false)
+}
+
+model VecinoComercios {
+  idComercio String  @id
+  documentoVecino String
+  vecinos Vecinos @relation(fields: [documentoVecino], references: [documento])
+  nombreComercio String
+  descripcion String
+  direccion String
+  contacto String
+  habilitado Boolean @default(false)
 }
