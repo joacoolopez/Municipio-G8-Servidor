@@ -9,5 +9,6 @@ router.get("/getServicios", getServicios)
 router.get("/getServicioById/:idServicio", getServicioById)
 router.get("/getPrimerImagen/:idServicio", getPrimerImagen)
 router.put("/habilitar/:idServicio", habilitar)
+router.get("/getImagenes/:idServicio", )
 
 export default router

@@ -90,4 +90,5 @@ const habilitar = async (idServicio) => {
 
   return servicioModificado
 }
+
 export default {postServicio, getServicios, getServicioById, getPrimerImagen,habilitar}
