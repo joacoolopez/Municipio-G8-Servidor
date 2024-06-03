@@ -2,17 +2,21 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 import path from "path";
 
-const postServicio = async (documento, tituloServicio, contacto, horaApertura, horaCierre, descripcion, idServicio) => {
+const postServicio = async (documentoVecino, tituloServicio, direccion, telefono, horaApertura, minutoApertura, horaCierre, minutoCierre, rubro, descripcion, idServicio) => {
 
     const nuevoServicio = await prisma.vecinoServicios.create({
         data: {
           idServicio: idServicio,
-          documentoVecino: documento,
+          documentoVecino: documentoVecino,
           tituloServicio: tituloServicio,
-          contacto: contacto,
+          direccion: direccion,
+          telefono: telefono,
           horaApertura: horaApertura,
+          minutoApertura: minutoApertura,
           horaCierre: horaCierre,
-          descripcion: descripcion,
+          minutoCierre: minutoCierre,
+          idRubroMercado: parseInt(rubro),
+          descripcion: descripcion
         },
       });
       return nuevoServicio

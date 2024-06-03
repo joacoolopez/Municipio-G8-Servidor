@@ -2,9 +2,9 @@ import servicios from "../services/servicios.service.js";
 
 const postServicio = async (req, res) => {
     try {
-        const {documento, tituloServicio, contacto, horaApertura, horaCierre, descripcion, idServicio} = req.body
+        const {documento, tituloServicio, direccion, telefono, horaApertura, minutoApertura, horaCierre, minutoCierre, rubro, descripcion, idServicio} = req.body
         console.log(req.files)
-        const response = await servicios.postServicio(documento, tituloServicio, contacto, horaApertura, horaCierre, descripcion, idServicio)
+        const response = await servicios.postServicio(documento, tituloServicio, direccion, telefono, horaApertura, minutoApertura, horaCierre, minutoCierre, rubro, descripcion, idServicio)
         res.send(response)
     } catch (error) {
         console.log(error)

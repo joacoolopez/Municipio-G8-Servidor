@@ -68,6 +68,7 @@ model Rubros {
   idRubro        Int         @id @default(autoincrement())
   descripcion    String
   desperfectos   Desperfectos[]
+  
 }
 
 // Definición de la tabla desperfectos
@@ -140,6 +141,7 @@ model Barrios {
 model VecinoUser {
   documentoVecino String @id
   password String?
+  mail String?
   habilitado Boolean @default(false)
   passwordActiva Boolean @default(false)
   vecinos Vecinos @relation(fields: [documentoVecino], references: [documento])
@@ -151,10 +153,15 @@ model VecinoServicios {
   documentoVecino String
   vecinos Vecinos @relation(fields: [documentoVecino], references: [documento])
   tituloServicio String
-  contacto String
+  direccion String
   horaApertura String
+  minutoApertura String
   horaCierre String
+  minutoCierre String
   descripcion String
+  telefono String
+  idRubroMercado Int
+  rubroMercado RubrosMercados @relation(fields: [idRubroMercado], references: [idRubroMercado])
   habilitado Boolean @default(false)
 }
 
@@ -167,4 +174,10 @@ model VecinoComercios {
   direccion String
   contacto String
   habilitado Boolean @default(false)
+}
+
+model RubrosMercados {
+  idRubroMercado Int @id @default(autoincrement())
+  descripcion String
+  vecinoServicios VecinoServicios[] 
 }
