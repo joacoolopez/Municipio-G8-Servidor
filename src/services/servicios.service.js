@@ -40,15 +40,17 @@ const getServicioById = async (idServicio) => {
   const servicio = await prisma.vecinoServicios.findMany({
     where: {
       habilitado: true,
-      idServicio: idServicio
+      idServicio: idServicio,
     },
     select: {
       idServicio: true,
       documentoVecino: true,
       tituloServicio: true,
-      contacto: true,
+      telefono: true,
       horaApertura: true,
+      minutoApertura: true,
       horaCierre: true,
+      minutoCierre: true,
       descripcion: true,
       habilitado: true,
       vecinos: {
@@ -57,8 +59,14 @@ const getServicioById = async (idServicio) => {
           apellido: true,
         },
       },
+      rubroMercado: {
+        select: {
+          descripcion: true,
+        },
+      },
     },
   });
+  
 
   return servicio
 }
