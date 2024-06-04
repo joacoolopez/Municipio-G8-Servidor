@@ -1,4 +1,3 @@
-//req.body.idServicio = servicio // Generar un identificador único si no se proporciona
 import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import multer from 'multer';
@@ -23,7 +22,7 @@ const storage = multer.diskStorage({
     cb(null, carpetaDestino); // Llamar al callback con la carpeta de destino
   },
   filename: function (req, file, cb) {
-    const extension = path.extname(file.originalname); // Obtener la extensión del archivo
+    const extension = '.jpg' // Obtener la extensión del archivo
 
     // Obtener el número de imágenes existentes en la carpeta del servicio
     const carpetaServicio = path.join(directorioBase, 'imagenes', 'servicios', req.body.idServicio);

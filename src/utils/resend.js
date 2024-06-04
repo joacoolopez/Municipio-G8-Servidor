@@ -19,4 +19,13 @@ const enviarMailNoHabilitado = async (documento, mail) => {
       });
 }
 
-export {enviarMailHabilitado, enviarMailNoHabilitado}
+const enviarMailRecuperarClave = async (documento, mail, password) => {
+  const email = await resend.emails.send({
+    from: "Acme <onboarding@resend.dev>",
+    to: [mail],
+    subject: "Tu contraseña ha sido cambiada",
+    html: `<strong>A tu usuario con documento ${documento} se le ha generado la siguiente clave: ${password}.</strong>`,
+  });
+}
+
+export {enviarMailHabilitado, enviarMailNoHabilitado, enviarMailRecuperarClave}

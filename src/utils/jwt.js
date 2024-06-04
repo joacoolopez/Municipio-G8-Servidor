@@ -3,8 +3,8 @@ import jwt from 'jsonwebtoken';
 const sign = jwt.sign;
 const verify = jwt.verify;
 
-const generateToken = (id) => {
-    const token = sign({id}, process.env.JWT_SECRET)
+const generateToken = (documento) => {
+    const token = sign({documento}, process.env.JWT_SECRET)
     return token
 }
 

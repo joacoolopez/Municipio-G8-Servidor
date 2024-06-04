@@ -1,7 +1,8 @@
 import { PrismaClient } from "@prisma/client"
 import { encrypt, isValidPassword } from "../utils/crypt.js";
 import { generateToken } from "../utils/jwt.js";
-import { enviarMailHabilitado, enviarMailNoHabilitado } from "../utils/resend.js";
+import { enviarMailHabilitado, enviarMailNoHabilitado, enviarMailRecuperarClave } from "../utils/resend.js";
+import { randomPassword } from "../utils/randomPassword.js";
 
 const prisma = new PrismaClient()
 
@@ -51,8 +52,7 @@ const login = async (documento, password) => {
         return false
     }
 
-    const id = user.documento
-    const token = generateToken(id)
+    const token = generateToken(documento)
 
     return {token}
 }
@@ -145,8 +145,70 @@ const cambiarHabilitado = async (documento, estadoHabilitado) => {
     }
 }
 
-const recuperarClave = async () => {
-  
+const recuperarClave = async (documento, mail) => {
+    const user = await prisma.vecinoUser.findUnique({
+        where: {
+            documentoVecino: documento,
+            mail: mail,
+            habilitado: true,
+            passwordActiva: true
+        },
+    });
+
+    if (!user){
+        return false
+    }
+
+    const newPassword = randomPassword()
+    console.log(newPassword)
+
+    const passwordEncriptada = await encrypt(newPassword)
+
+    const updatedUser = await prisma.vecinoUser.update({
+        where: {
+            documentoVecino: documento,
+            mail: mail,
+        },
+        data: {
+            password: passwordEncriptada
+        }
+    });
+    
+
+    enviarMailRecuperarClave(documento, mail, newPassword)
+    return true
+
 }
 
-export default {generarClave, login, getHabilitado, getPasswordActiva, esVecino, solicitarClave, cambiarHabilitado}
+const cambiarClave = async (documento,contraseniaActual, contraseniaNueva) => {
+    const user = await prisma.vecinoUser.findUnique({
+        where: {
+            documentoVecino: documento,
+        },
+    });
+    if (!user){
+        return false
+    }
+    
+    const hashPassword = user.password
+    const isValid = await isValidPassword(contraseniaActual, hashPassword)
+
+    if (!isValid){
+        return false
+    }
+
+    const contraseniaNuevaEncriptada = await encrypt(contraseniaNueva)
+
+    const updatedUser = await prisma.vecinoUser.update({
+        where: {
+            documentoVecino: documento
+        },
+        data: {
+            password: contraseniaNuevaEncriptada
+        }
+    });
+
+    return true
+}
+
+export default {generarClave, login, getHabilitado, getPasswordActiva, esVecino, solicitarClave, cambiarHabilitado, recuperarClave, cambiarClave}
