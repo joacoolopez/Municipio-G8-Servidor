@@ -5,19 +5,18 @@ const postServicio = async (req, res) => {
         const {documento, tituloServicio, direccion, telefono, horaApertura, minutoApertura, horaCierre, minutoCierre, rubro, descripcion, idServicio} = req.body
         console.log(req.files)
         const response = await servicios.postServicio(documento, tituloServicio, direccion, telefono, horaApertura, minutoApertura, horaCierre, minutoCierre, rubro, descripcion, idServicio)
-        res.send(response)
+        res.status(201).send(response)
     } catch (error) {
-        console.log(error)
-        res.send(error)
+        res.status(400).send(error)
     }
 }
 
 const getServicios = async (req, res) => {
   try {
         const response = await servicios.getServicios()
-        res.send(response)
+        res.status(200).send(response)
   } catch (error) {
-        res.send(error)
+        res.status(200).send(response)
   }
 }
 
@@ -25,9 +24,9 @@ const getServicioById = async (req, res) => {
   try {
         const idServicio = req.params.idServicio
         const response = await servicios.getServicioById(idServicio)
-        res.send (response)
+        res.status(200).send(response)
   } catch (error) {
-        res.send(error)
+        res.status(400).send(error)
   }
 }
 

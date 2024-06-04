@@ -73,7 +73,7 @@ const getServicioById = async (idServicio) => {
 
 const getPrimerImagen = async (idServicio) => {
   const directorioBase  = path.resolve();
-  const nombreImagen = idServicio + "-1.png"
+  const nombreImagen = idServicio + "-1.jpg"
     
   const rutaImagen = path.join(directorioBase, 'imagenes', 'servicios', idServicio, nombreImagen );
   console.log(rutaImagen)
