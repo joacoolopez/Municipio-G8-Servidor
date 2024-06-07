@@ -61,22 +61,31 @@ const getHabilitado = async (documento) => {
     const user = await prisma.vecinoUser.findUnique({
         where: {
             documentoVecino: documento,
+            habilitado: true
         },
     });
     
-    const habilitado = user.habilitado
-    return {habilitado}
+    if (user) {
+        return true
+    } else {
+        return false
+    }
 }
 
 const getPasswordActiva = async (documento) => {
     const user = await prisma.vecinoUser.findUnique({
         where: {
             documentoVecino: documento,
+            passwordActiva: true
         },
     });
     
-    const passwordActiva = user.passwordActiva
-    return {passwordActiva}
+
+    if (user) {
+        return true
+    } else {
+        return false
+    }
 }
 
 const esVecino = async (documento) => {

@@ -33,9 +33,13 @@ const getHabilitado = async (req, res) => {
     try {
         const documento = req.params.documento
         const response = await userVecino.getHabilitado(documento)
-        res.send(response)
+        if (response){
+            res.status(200).send("El usuario esta habilitado")
+        }else {
+            res.status(400).send("El usuario no esta habilitado")
+        }
     } catch (error) {
-        res.send(error)
+        res.status(500).send(error)
     }
 }
 
@@ -43,9 +47,13 @@ const getPasswordActiva = async (req, res) => {
     try {
         const documento = req.params.documento
         const response = await userVecino.getPasswordActiva(documento)
-        res.send(response)
+        if (response){
+            res.status(200).send("El usuario tiene contraseña activa")
+        }else {
+            res.status(400).send("El usuario no tiene contraseña activa")
+        }
     } catch (error) {
-        res.send(error)
+        res.status(500).send(error)
     }
 }
 
