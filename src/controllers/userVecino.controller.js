@@ -53,7 +53,7 @@ const esVecino = async (req, res) => {
     try {
         const documento = req.params.documento
         const response = await userVecino.esVecino(documento)
-        if (response) {
+        if (response.esVecino) {
             res.status(302).send(response)
         }else {
             res.status(404).send(response)
