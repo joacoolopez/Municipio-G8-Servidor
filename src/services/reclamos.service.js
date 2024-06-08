@@ -16,7 +16,7 @@ const postReclamo = async (documentoVecino, legajoInspector, idSitio, idDesperfe
             idSitio: idSitio,
             idDesperfecto: idDesperfecto,
             descripcion: descripcion,
-            estado: 'Pendiente' //ver
+            estado: 'Pendiente'
         },
       });
       return nuevoReclamo
@@ -152,4 +152,69 @@ const getReclamosByRubro = async (idRubro) => {
 }
 
 
-export default {postReclamo, getReclamos, getReclamoById, getReclamoParcialById, getReclamosByVecino, getReclamosByInspector, getReclamosByRubro}
+
+const getEstadoReclamo = async (idReclamo) => {
+    
+    const estado = await prisma.Reclamos.findUnique({
+      where: {
+        idReclamo: idReclamo
+      },
+      select: {
+        estado: true
+      }
+    });
+    return estado
+  }
+
+
+//Para uso del municipio
+const cambiarEstadoReclamo = async (idReclamo, nuevoEstado) => {
+  
+    const reclamo = await prisma.Reclamos.update({
+      where: {
+        idReclamo: idReclamo
+      },
+      data: {
+        estado: nuevoEstado
+      }
+    });
+    return reclamo
+  }
+
+
+const postMovimientoReclamo = async (idReclamo, responsable, causa) => {
+    
+    const movimientoReclamo = await prisma.MovimientosReclamo.create({
+      data: {
+        idReclamo: idReclamo,
+        responsable: responsable,
+        causa: causa
+      }
+    });
+    return movimientoReclamo
+  }  
+
+const getMovimientosReclamo = async (idReclamo) => {
+    
+      const movimientoReclamo = await prisma.MovimientosReclamo.findMany({
+        where: {
+          idReclamo: idReclamo
+        }
+      });
+      return movimientoReclamo
+  }
+
+
+const patchIdReclamoUnificado = async (idReclamo, idReclamoUnificador) => {
+    const reclamo = await prisma.Reclamos.update({
+      where: {
+        idReclamo: idReclamo
+      },
+      data: {
+        IdReclamoUnificado: idReclamoUnificador
+      }
+    });
+    return reclamo
+  }
+
+export default {postReclamo, getReclamos, getReclamoById, getReclamoParcialById, getReclamosByVecino, getReclamosByInspector, getReclamosByRubro, getEstadoReclamo, cambiarEstadoReclamo, postMovimientoReclamo, getMovimientosReclamo, patchIdReclamoUnificado}
