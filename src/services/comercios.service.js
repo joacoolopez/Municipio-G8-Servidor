@@ -55,7 +55,7 @@ return comercio
 
 
 //habilitar el comercio
-const habilitar = async (idComercio) => {
+const habilitarComercio = async (idComercio) => {
     const existeComercio = await prisma.vecinoComercio.findUnique({
         where: {
             idComercio: idComercio
@@ -75,4 +75,4 @@ const habilitar = async (idComercio) => {
     return comercioModificado
 }
 
-export default {postComercio, getComercios, getComercioById, habilitar}
+export default {postComercio, getComercios, getComercioById, habilitarComercio}
