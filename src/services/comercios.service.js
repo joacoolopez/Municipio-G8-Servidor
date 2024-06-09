@@ -3,7 +3,7 @@ const prisma = new PrismaClient()
 
 const postComercio = async (documentoVecino, nombreComercio, descripcion, direccion, contacto, idComercio) => {
 
-    const nuevoComercio = await prisma.vecinoComercio.create({
+    const nuevoComercio = await prisma.vecinoComercios.create({
         data: {
             idComercio: idComercio,
             documentoVecino: documentoVecino,
@@ -16,7 +16,7 @@ const postComercio = async (documentoVecino, nombreComercio, descripcion, direcc
     return nuevoComercio
 }
 const getComercios = async () => {
-    const comercios = await prisma.vecinoComercio.findMany({
+    const comercios = await prisma.vecinoComercios.findMany({
         select: {
             idComercio: true,
             nombreComercio: true,
@@ -28,7 +28,7 @@ const getComercios = async () => {
     return comercios
 }
 const getComercioById = async (idComercio) => {
-    const comercio = await prisma.vecinoComercio.findMany({
+    const comercio = await prisma.vecinoComercios.findMany({
     where: {
         habilitado: true,
         idComercio: idComercio,
@@ -56,7 +56,7 @@ return comercio
 
 //habilitar el comercio
 const habilitarComercio = async (idComercio) => {
-    const existeComercio = await prisma.vecinoComercio.findUnique({
+    const existeComercio = await prisma.vecinoComercios.findUnique({
         where: {
             idComercio: idComercio
         }
@@ -64,7 +64,7 @@ const habilitarComercio = async (idComercio) => {
     if (!existeComercio){
         "COMERCIO_NOT_EXIST"
     }
-    const comercioModificado = await prisma.vecinoComercio.update({
+    const comercioModificado = await prisma.vecinoComercios.update({
         where: {
             idComercio: idComercio
         },
