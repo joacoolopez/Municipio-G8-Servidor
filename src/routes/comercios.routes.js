@@ -1,4 +1,4 @@
-import { postComercio } from ".../controllers/comercios.controller.js";
+import {  getComercioById, getComercios, habilitarComercio, postComercio } from "../controllers/comercios.controller.js";
 import { Router } from "express";
 
 const router = Router()

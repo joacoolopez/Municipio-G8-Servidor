@@ -31,7 +31,7 @@ const getComercioById = async (req, res) => {
     }
 }
 
-const habilitar = async (req, res) => {
+const habilitarComercio = async (req, res) => {
     try{
         const idComercio = req.params.idComercio
         const response = await comercios.habilitar(idComercio)
@@ -41,4 +41,4 @@ const habilitar = async (req, res) => {
     }
 }
 
-export { getComercioById, getComercios, habilitar, postComercio };
+export { getComercioById, getComercios, habilitarComercio, postComercio };
