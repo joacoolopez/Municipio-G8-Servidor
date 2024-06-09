@@ -1,9 +1,12 @@
 import servicios from "../services/servicios.service.js";
+import { v4 as uuidv4 } from 'uuid';
 
 const postServicio = async (req, res) => {
     try {
         const documento = req.documento
-        const {tituloServicio, direccion, telefono, horaApertura, minutoApertura, horaCierre, minutoCierre, rubro, descripcion, idServicio} = req.body
+        const idServicio = uuidv4()
+        const {tituloServicio, direccion, telefono, horaApertura, minutoApertura, horaCierre, minutoCierre, rubro, descripcion} = req.body
+        
         const response = await servicios.postServicio(documento, tituloServicio, direccion, telefono, horaApertura, minutoApertura, horaCierre, minutoCierre, rubro, descripcion, idServicio)
         res.status(201).send(response)
     } catch (error) {
