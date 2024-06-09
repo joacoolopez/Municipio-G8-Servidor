@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 import { encrypt, isValidPassword } from "../utils/crypt.js";
 import { generateToken } from "../utils/jwt.js";
-import { enviarMailHabilitado, enviarMailNoHabilitado, enviarMailRecuperarClave } from "../utils/resend.js";
+import { enviarMailHabilitado, enviarMailNoHabilitado, enviarMailRecuperarClave } from "../utils/mails.js";
 import { randomPassword } from "../utils/randomPassword.js";
 
 const prisma = new PrismaClient()
