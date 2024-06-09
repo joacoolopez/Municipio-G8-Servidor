@@ -17,7 +17,7 @@ const getComercios = async (req, res) => {
         const response = await comercios.getComercios()
         res.status(200).send(response)
     }catch (error){
-        restart.status(400).send({ error: "Hubo un error al procesar la solicitud." })
+        res.status(400).send({ error: "Hubo un error al procesar la solicitud." })
     }
 }
 
