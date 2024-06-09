@@ -24,13 +24,32 @@ const postServicio = async (documentoVecino, tituloServicio, direccion, telefono
 
 const getServicios = async () => {
   const servicios = await prisma.vecinoServicios.findMany({
+    where: {
+      habilitado: true,
+    },
     select: {
       idServicio: true,
+      documentoVecino: true,
       tituloServicio: true,
+      telefono: true,
+      horaApertura: true,
+      minutoApertura: true,
+      horaCierre: true,
+      minutoCierre: true,
+      descripcion: true,
+      habilitado: true,
+      vecinos: {
+        select: {
+          nombre: true,
+          apellido: true,
+        },
+      },
+      rubroMercado: {
+        select: {
+          descripcion: true,
+        },
+      },
     },
-    where:{
-      habilitado: true
-    }
   });
   return servicios
 }
