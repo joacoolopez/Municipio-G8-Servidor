@@ -14,7 +14,7 @@ app.use(express.json())
 app.use("/api/userVecino", userVecinoRoute)
 app.use("/api/servicios", serviciosRoute)
 app.use("/api/reclamos", reclamosRoute)
-app.use("/api/comercios", comerciosRoute)
+app.use("/api/comercios", comerciosRoute)//
 
 app.listen(PORT);
 console.log("Server on port", PORT);
