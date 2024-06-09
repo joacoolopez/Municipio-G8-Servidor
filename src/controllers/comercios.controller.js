@@ -2,7 +2,9 @@ import comercios from "../services/comercios.service.js";
 
 const postComercio = async (req, res) => {
     try {
+
         const {documentoVecino, nombreComercio, descripcion, direccion, contacto, idComercio} = req.body
+        console.log({documentoVecino, nombreComercio, descripcion, direccion, contacto, idComercio})
         const response = await comercios.postComercio(documentoVecino, nombreComercio, descripcion, direccion, contacto, idComercio) 
         res.status(201).send(response)
     }catch (error){
