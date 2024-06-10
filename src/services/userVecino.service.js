@@ -53,8 +53,13 @@ const login = async (documento, password) => {
     }
 
     const token = generateToken(documento)
+    const userVecino = await prisma.vecinos.findUnique({
+        where: {
+            documento: documento,
+        },
+    });
 
-    return {token}
+    return {user, userVecino, token}
 }
 
 const getHabilitado = async (documento) => {

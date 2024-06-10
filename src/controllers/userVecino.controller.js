@@ -97,7 +97,9 @@ const cambiarHabilitado = async (req, res) => {
 
 const recuperarClave = async (req, res) => {
     try {
+        console.log(req.body)
         const {documento, mail} = req.body
+        console.log(documento, mail)
         const response = await userVecino.recuperarClave(documento, mail)
         if (response) {
             res.status(302).send("La contraseña ha sido enviada con exito")
