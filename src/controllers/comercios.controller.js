@@ -1,3 +1,4 @@
+import { compare } from "bcrypt";
 import comercios from "../services/comercios.service.js";
 
 const postComercio = async (req, res) => {
@@ -42,5 +43,17 @@ const habilitarComercio = async (req, res) => {
     }
 }
 
-export { getComercioById, getComercios, habilitarComercio, postComercio };
+const getPrimerImagen = async (req, res) => {
+    try {
+      const idComercio = req.params.idComercio
+      console.log(idComercio)
+      const response = await comercios.getPrimerImagen(idComercio)
+      res.sendFile(response)
+    } catch (error) {
+        console.log(error)
+          res.send(error)
+    }
+  }
+
+export { getComercioById, getComercios, habilitarComercio, postComercio, getPrimerImagen };
 

@@ -1,5 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 const prisma = new PrismaClient()
+import path from "path";
 
 const postComercio = async (documentoVecino, nombreComercio, descripcion, direccion, contacto, idComercio) => {
 
@@ -18,13 +19,24 @@ const postComercio = async (documentoVecino, nombreComercio, descripcion, direcc
 }
 const getComercios = async () => {
     const comercios = await prisma.VecinoComercios.findMany({
-        select: {
-            idComercio: true,
-            nombreComercio: true,
-        },
         where: {
-            habilitado: true //verif este habilitado
-        }
+            habilitado: true,
+          },
+          select: {
+            idComercio: true,
+            documentoVecino: true,
+            descripcion: true,
+            direccion: true,
+            nombreComercio: true,
+            habilitado: true,
+            contacto: true,
+            vecinos: {
+              select: {
+                nombre: true,
+                apellido: true,
+              },
+            },
+          },
     });
     return comercios
 }
@@ -76,4 +88,14 @@ const habilitarComercio = async (idComercio) => {
     return comercioModificado
 }
 
-export default {postComercio, getComercios, getComercioById, habilitarComercio}
+const getPrimerImagen = async (idComercio) => {
+    const directorioBase  = path.resolve();
+    const nombreImagen = idComercio + "-1.jpg"
+    console.log(idComercio)
+    const rutaImagen = path.join(directorioBase, 'imagenes', 'comercios', idComercio, nombreImagen );
+    console.log(rutaImagen)
+    return rutaImagen
+  }
+  
+
+export default {postComercio, getComercios, getComercioById, habilitarComercio, getPrimerImagen}

@@ -10,13 +10,13 @@ const directorioBase = path.resolve();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Obtener el nombre del servicio de la solicitud o generar un UUID si no se proporciona
-    const servicio = uuidv4()
-    req.body.idServicio = servicio;
+    const comercio = uuidv4()
+    req.body.idComercio = comercio;
     
      // Asignar el ID del servicio a la solicitud
 
     // Crear la carpeta de destino para el servicio si no existe
-    const carpetaDestino = path.join(directorioBase, 'imagenes', 'servicios', servicio);
+    const carpetaDestino = path.join(directorioBase, 'imagenes', 'comercios', comercio);
     if (!fs.existsSync(carpetaDestino)) {
       fs.mkdirSync(carpetaDestino, { recursive: true });
     }
@@ -27,11 +27,11 @@ const storage = multer.diskStorage({
     const extension = '.jpg' // Obtener la extensión del archivo
 
     // Obtener el número de imágenes existentes en la carpeta del servicio
-    const carpetaServicio = path.join(directorioBase, 'imagenes', 'servicios', req.body.idServicio);
-    const numImagenes = fs.readdirSync(carpetaServicio).length;
+    const carpetaComercio = path.join(directorioBase, 'imagenes', 'comercios', req.body.idComercio);
+    const numImagenes = fs.readdirSync(carpetaComercio).length;
 
     // Generar el nombre del archivo con el formato: servicio-numero.extensión
-    const nombreArchivo = `${req.body.idServicio}-${numImagenes + 1}${extension}`;
+    const nombreArchivo = `${req.body.idComercio}-${numImagenes + 1}${extension}`;
 
     cb(null, nombreArchivo); // Llamar al callback con el nombre de archivo generado
   },
