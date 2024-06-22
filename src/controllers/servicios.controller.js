@@ -44,6 +44,17 @@ const getPrimerImagen = async (req, res) => {
   }
 }
 
+const getImagenes = async (req, res) => {
+  try {
+    const idServicio = req.params.idServicio
+    const numeroImagen = req.params.numeroImagen
+    const response = await servicios.getImagenes(idServicio, numeroImagen)
+    res.status(200).sendFile(response)
+  } catch (error) {
+        res.status(400).send("No se ha encontrado una imagen con esas caracterisicas.")
+  }
+}
+
 const habilitar = async (req, res) => {
   try {
     const idServicio = req.params.idServicio
@@ -55,4 +66,4 @@ const habilitar = async (req, res) => {
 }
 
 
-export {postServicio, getServicios, getServicioById, getPrimerImagen, habilitar}
+export {postServicio, getServicios, getServicioById, getPrimerImagen, habilitar, getImagenes}

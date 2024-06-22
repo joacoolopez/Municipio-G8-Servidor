@@ -99,6 +99,15 @@ const getPrimerImagen = async (idServicio) => {
   return rutaImagen
 }
 
+const getImagenes = async (idServicio, numeroImagen) => {
+  const directorioBase  = path.resolve();
+  const nombreImagen = idServicio + "-" + numeroImagen + ".jpg"
+    
+  const rutaImagen = path.join(directorioBase, 'imagenes', 'servicios', idServicio, nombreImagen );
+  console.log(rutaImagen)
+  return rutaImagen
+}
+
 const habilitar = async (idServicio) => {
   const servicioExiste = await prisma.vecinoServicios.findUnique({
     where:{
@@ -122,4 +131,4 @@ const habilitar = async (idServicio) => {
   return servicioModificado
 }
 
-export default {postServicio, getServicios, getServicioById, getPrimerImagen,habilitar}
+export default {postServicio, getServicios, getServicioById, getPrimerImagen,habilitar, getImagenes}
