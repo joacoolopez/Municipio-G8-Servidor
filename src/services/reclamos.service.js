@@ -217,4 +217,24 @@ const patchIdReclamoUnificado = async (idReclamo, idReclamoUnificador) => {
     return reclamo
   }
 
-export default {postReclamo, getReclamos, getReclamoById, getReclamoParcialById, getReclamosByVecino, getReclamosByInspector, getReclamosByRubro, getEstadoReclamo, cambiarEstadoReclamo, postMovimientoReclamo, getMovimientosReclamo, patchIdReclamoUnificado}
+
+//Manejo de imagenes
+const getPrimerImagen = async (idReclamo) => {
+  const directorioBase  = path.resolve();
+  const nombreImagen = idReclamo + "-1.jpg"
+    
+  const rutaImagen = path.join(directorioBase, 'imagenes', 'reclamos', idReclamo, nombreImagen );
+  console.log(rutaImagen)
+  return rutaImagen
+}
+
+const getImagenes = async (idReclamo, numeroImagen) => {
+  const directorioBase  = path.resolve();
+  const nombreImagen = idReclamo + "-" + numeroImagen + ".jpg"
+    
+  const rutaImagen = path.join(directorioBase, 'imagenes', 'reclamos', idReclamo, nombreImagen );
+  console.log(rutaImagen)
+  return rutaImagen
+}
+
+export default {postReclamo, getReclamos, getReclamoById, getReclamoParcialById, getReclamosByVecino, getReclamosByInspector, getReclamosByRubro, getEstadoReclamo, cambiarEstadoReclamo, postMovimientoReclamo, getMovimientosReclamo, patchIdReclamoUnificado, getPrimerImagen, getImagenes}

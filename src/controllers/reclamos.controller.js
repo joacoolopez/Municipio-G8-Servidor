@@ -3,7 +3,7 @@ import reclamos from '../services/reclamos.service.js';
 const postReclamo = async (req, res) => {
     try {
         const {documentoVecino, legajoInspector, idSitio, idDesperfecto, descripcion} = req.body
-        const response = await reclamos.postReclamo(documentoVecino, legajoInspector, idSitio, idDesperfecto, descripcion)
+        const response = await reclamos.postReclamo(documentoVecino, legajoInspector, parseInt(idSitio), parseInt(idDesperfecto), descripcion)
         res.status(201).send(response)
     } catch (error) {
         console.log(error)
@@ -154,7 +154,29 @@ const unificarReclamos = async (req, res) => {
     }
 }
 
+//Manejo de imagenes
+const getPrimerImagen = async (req, res) => {
+    try {
+      const idReclamo = req.params.idReclamo
+      const response = await reclamos.getPrimerImagen(idReclamo)
+      res.sendFile(response)
+    } catch (error) {
+          res.send(error)
+    }
+  }
+  
+  const getImagenes = async (req, res) => {
+    try {
+      const idReclamo = req.params.idReclamo
+      const numeroImagen = req.params.numeroImagen
+      const response = await reclamos.getImagenes(idReclamo, numeroImagen)
+      res.status(200).sendFile(response)
+    } catch (error) {
+          res.status(400).send("No se ha encontrado una imagen con esas caracterisicas.")
+    }
+  }
 
 
 
-export {postReclamo, getReclamos, getReclamoById, getReclamoParcialById, getReclamosByVecino, getReclamosByInspector, getReclamosByRubro, cambiarEstadoReclamo, getMovimientosReclamo, postMovimientoReclamo, unificarReclamos}
+
+export {postReclamo, getReclamos, getReclamoById, getReclamoParcialById, getReclamosByVecino, getReclamosByInspector, getReclamosByRubro, cambiarEstadoReclamo, getMovimientosReclamo, postMovimientoReclamo, unificarReclamos, getPrimerImagen, getImagenes}
