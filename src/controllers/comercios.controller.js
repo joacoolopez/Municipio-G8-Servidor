@@ -55,5 +55,17 @@ const getPrimerImagen = async (req, res) => {
     }
   }
 
-export { getComercioById, getComercios, habilitarComercio, postComercio, getPrimerImagen };
+  const getImagenes = async (req, res) => {
+    try {
+      const idComercio = req.params.idComercio
+      const numeroImagen = req.params.numeroImagen
+      const response = await comercios.getImagenes(idComercio, numeroImagen)
+      res.sendFile(response)
+    } catch (error) {
+        console.log(error)
+          res.send(error)
+    }
+  }
+
+export { getComercioById, getComercios, habilitarComercio, postComercio, getPrimerImagen, getImagenes };
 

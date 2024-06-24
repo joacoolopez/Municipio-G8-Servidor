@@ -95,7 +95,15 @@ const getPrimerImagen = async (idComercio) => {
     const rutaImagen = path.join(directorioBase, 'imagenes', 'comercios', idComercio, nombreImagen );
     console.log(rutaImagen)
     return rutaImagen
-  }
-  
+}
 
-export default {postComercio, getComercios, getComercioById, habilitarComercio, getPrimerImagen}
+const getImagenes = async (idComercio, numeroImagen) => {
+    const directorioBase  = path.resolve();
+    const nombreImagen = idComercio + "-" + numeroImagen + ".jpg"
+      
+    const rutaImagen = path.join(directorioBase, 'imagenes', 'comercios', idComercio, nombreImagen );
+    console.log(rutaImagen)
+    return rutaImagen
+  }
+
+export default {postComercio, getComercios, getComercioById, habilitarComercio, getPrimerImagen, getImagenes}
