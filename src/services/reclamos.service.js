@@ -32,7 +32,8 @@ const getReclamos = async () => {
           descripcion: true,
         },
       },
-      idReclamo: true
+      idReclamo: true,
+      idReclamoImagen: true
     }
   });
   return reclamos
