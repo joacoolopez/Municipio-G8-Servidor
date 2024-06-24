@@ -84,6 +84,7 @@ model Desperfectos {
 
 model Reclamos {
   idReclamo          Int         @id @default(autoincrement())
+  idReclamoImagen    String
   documento          String?
   legajo             Int?
   idSitio            Int

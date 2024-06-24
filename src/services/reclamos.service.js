@@ -7,10 +7,11 @@ prisma.$connect()
   .then(() => console.log('Conectado a la base de datos, estoy en reclamos service'))
   .catch((error) => console.error('Error de conexión a la base de datos:', error));
 
-const postReclamo = async (documentoVecino, legajoInspector, idSitio, idDesperfecto, descripcion) => {
+const postReclamo = async (documentoVecino, legajoInspector, idSitio, idDesperfecto, descripcion, idReclamoImagen) => {
 
     const nuevoReclamo = await prisma.Reclamos.create({
         data: {
+            idReclamoImagen: idReclamoImagen,
             documento: documentoVecino,
             legajo: legajoInspector,
             idSitio: idSitio,

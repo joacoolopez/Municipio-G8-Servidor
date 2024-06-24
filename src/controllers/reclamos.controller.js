@@ -2,8 +2,8 @@ import reclamos from '../services/reclamos.service.js';
 
 const postReclamo = async (req, res) => {
     try {
-        const {documentoVecino, legajoInspector, idSitio, idDesperfecto, descripcion} = req.body
-        const response = await reclamos.postReclamo(documentoVecino, legajoInspector, parseInt(idSitio), parseInt(idDesperfecto), descripcion)
+        const {documentoVecino, legajoInspector, idSitio, idDesperfecto, descripcion, idReclamoImagen} = req.body
+        const response = await reclamos.postReclamo(documentoVecino, legajoInspector, parseInt(idSitio), parseInt(idDesperfecto), descripcion, idReclamoImagen)
         res.status(201).send(response)
     } catch (error) {
         console.log(error)
