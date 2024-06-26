@@ -5,7 +5,7 @@ import {authMiddleware} from '../middlewares/auth.js';
 
 const router = Router()
 
-router.post("/post", authMiddleware, upload.array('imagenes', Infinity),  postReclamo) 
+router.post("/post", authMiddleware, upload.array('imagenes', 7),  postReclamo) 
 //inspector tiene que poder cargar imagenes sin limite
 router.get("/getReclamos", getReclamos)
 router.get("/getReclamoById/:idReclamo", getReclamoById)
