@@ -168,8 +168,8 @@ const getPrimerImagen = async (req, res) => {
   
 const getImagenes = async (req, res) => {
 try {
-    const idReclamo = req.params.idReclamo
-    const numeroImagen = req.params.numeroImagen
+    const idReclamo = parseInt(req.params.idReclamo)
+    const numeroImagen = parseInt(req.params.numeroImagen)
     const response = await reclamos.getImagenes(idReclamo, numeroImagen)
     res.status(200).sendFile(response)
  } catch (error) {

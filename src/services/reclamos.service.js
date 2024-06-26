@@ -243,10 +243,20 @@ const getPrimerImagen = async (idReclamo) => {
 }
 
 const getImagenes = async (idReclamo, numeroImagen) => {
+  const reclamo = await prisma.Reclamos.findUnique({
+    where: {
+      idReclamo: idReclamo
+    },
+    select: {
+      idReclamoImagen: true
+    }
+  });
+  const idReclamoImagen = reclamo.idReclamoImagen
+
   const directorioBase  = path.resolve();
-  const nombreImagen = idReclamo + "-" + numeroImagen + ".jpg"
-    
-  const rutaImagen = path.join(directorioBase, 'imagenes', 'reclamos', idReclamo, nombreImagen );
+  const nombreImagen = idReclamoImagen + "-" + numeroImagen + ".jpg"
+  console.log(nombreImagen)
+  const rutaImagen = path.join(directorioBase, 'imagenes', 'reclamos', idReclamoImagen, nombreImagen );
   console.log(rutaImagen)
   return rutaImagen
 }

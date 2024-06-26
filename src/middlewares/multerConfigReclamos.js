@@ -10,13 +10,16 @@ const directorioBase = path.resolve();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Obtener el nombre del servicio de la solicitud o generar un UUID si no se proporciona
-    const idReclamoImagen = uuidv4()
-    req.body.idReclamoImagen = idReclamoImagen;
+
+    if (req.body.idReclamoImagen === undefined) {
+      const idReclamoImagen = uuidv4()
+      req.body.idReclamoImagen = idReclamoImagen;
+    }
     
      // Asignar el ID del servicio a la solicitud
 
     // Crear la carpeta de destino para el servicio si no existe
-    const carpetaDestino = path.join(directorioBase, 'imagenes', 'reclamos', idReclamoImagen);
+    const carpetaDestino = path.join(directorioBase, 'imagenes', 'reclamos', req.body.idReclamoImagen);
     if (!fs.existsSync(carpetaDestino)) {
       fs.mkdirSync(carpetaDestino, { recursive: true });
     }
