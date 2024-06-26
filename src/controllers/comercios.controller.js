@@ -1,12 +1,15 @@
 import { compare } from "bcrypt";
 import comercios from "../services/comercios.service.js";
+import { v4 as uuidv4 } from 'uuid';
 
 const postComercio = async (req, res) => {
     try {
 
         const {documentoVecino, nombreComercio, descripcion, direccion, contacto, idComercio} = req.body
+
         console.log({documentoVecino, nombreComercio, descripcion, direccion, contacto, idComercio})
-        const response = await comercios.postComercio(documentoVecino, nombreComercio, descripcion, direccion, contacto, idComercio) 
+        const comercioId = idComercio || uuidv4();
+        const response = await comercios.postComercio(documentoVecino, nombreComercio, descripcion, direccion, contacto, comercioId) 
         res.status(201).send(response)
     }catch (error){
         console.log(error)
