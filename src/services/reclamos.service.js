@@ -222,10 +222,22 @@ const patchIdReclamoUnificado = async (idReclamo, idReclamoUnificador) => {
 
 //Manejo de imagenes
 const getPrimerImagen = async (idReclamo) => {
+  console.log(idReclamo)
+  const reclamo = await prisma.Reclamos.findUnique({
+    where: {
+      idReclamo: idReclamo
+    },
+    select: {
+      idReclamoImagen: true
+    }
+  });
+
+  const idReclamoImagen = reclamo.idReclamoImagen
+
   const directorioBase  = path.resolve();
-  const nombreImagen = idReclamo + "-1.jpg"
+  const nombreImagen = idReclamoImagen + "-1.jpg"
     
-  const rutaImagen = path.join(directorioBase, 'imagenes', 'reclamos', idReclamo, nombreImagen );
+  const rutaImagen = path.join(directorioBase, 'imagenes', 'reclamos', idReclamoImagen, nombreImagen );
   console.log(rutaImagen)
   return rutaImagen
 }
