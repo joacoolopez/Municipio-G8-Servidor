@@ -1,9 +1,10 @@
 import denuncias from '../services/denuncias.service.js';
 
 const postDenuncia = async (req, res) => {
+    console.log(req.body)
     try {
-        const {documento, idSitio, descripcion, aceptaResponsabilidad} = req.body
-        const response = await denuncias.postDenuncia(documento, parseInt(idSitio), descripcion, parseInt(aceptaResponsabilidad))
+        const {documento, idSitio, descripcion, aceptaResponsabilidad, idDenunciaPruebas} = req.body
+        const response = await denuncias.postDenuncia(documento, parseInt(idSitio), descripcion, parseInt(aceptaResponsabilidad), idDenunciaPruebas)
         res.status(201).send(response)
     } catch (error) {
         console.log(error)
@@ -91,19 +92,27 @@ const getPrimerImagen = async (req, res) => {
   }
   
 const getImagenes = async (req, res) => {
-try {
-    const idDenuncia = parseInt(req.params.idDenuncia)
-    const numeroImagen = parseInt(req.params.numeroImagen)
-    const response = await denuncias.getImagenes(idDenuncia, numeroImagen)
-    res.status(200).sendFile(response)
- } catch (error) {
-          res.status(400).send("No se ha encontrado una imagen con esas caracterisicas.")
+    try {
+        const idDenuncia = parseInt(req.params.idDenuncia)
+        const numeroImagen = parseInt(req.params.numeroImagen)
+        const response = await denuncias.getImagenes(idDenuncia, numeroImagen)
+        res.status(200).sendFile(response)
+    } catch (error) {
+            res.status(400).send("No se ha encontrado una imagen con esas caracterisicas.")
+    }
 }
- }
 
 //Manejo de archivos
+const getZipArchivos = async (req, res) => {
+    try {
+        const idDenuncia = parseInt(req.params.idDenuncia)
+        const response = await denuncias.getZipArchivos(idDenuncia)
+        res.status(200).sendFile(response)
+     } catch (error) {
+              res.status(400).send("No se ha encontrado una zip con esas caracterisicas.")
+    }
+}
 
 
 
-
-export {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, cambiarEstadoDenuncia}
+export {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, cambiarEstadoDenuncia, getPrimerImagen, getImagenes, getZipArchivos}
