@@ -3,9 +3,6 @@ import path from 'path';
 import multer from 'multer';
 import fs from 'fs';
 
-//idea:
-//guardar en un zip todo tipo de archivo que venga (imagen, archivo)
-//las imagenes se guardan en la carpeta como las demas entidades
 
 // Definir la carpeta base para guardar las imágenes
 const directorioBase = path.resolve();

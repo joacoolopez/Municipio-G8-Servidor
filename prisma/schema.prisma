@@ -112,6 +112,7 @@ model MovimientosReclamo {
 // Definición de la tabla denuncias
 model Denuncias {
   idDenuncias           Int         @id @default(autoincrement())
+  idDenunciaPruebas     String
   documento             String
   idSitio               Int?
   descripcion           String?
