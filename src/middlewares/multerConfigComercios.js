@@ -10,9 +10,11 @@ const directorioBase = path.resolve();
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     // Obtener el nombre del servicio de la solicitud o generar un UUID si no se proporciona
-    const comercio = uuidv4()
-    req.body.idComercio = comercio;
     
+    if (req.body.idComercio === undefined) {
+      const idComercio = uuidv4()
+      req.body.idComercio = idComercio;
+    }
      // Asignar el ID del servicio a la solicitud
 
     // Crear la carpeta de destino para el servicio si no existe
