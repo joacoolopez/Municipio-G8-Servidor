@@ -13,4 +13,9 @@ const verifyToken = (token) => {
     return valid
 }
 
-export {generateToken, verifyToken}
+const generateTokenInspector = (legajo) => {
+    const token = sign({legajo}, process.env.JWT_SECRET)
+    return token
+}
+
+export {generateToken, verifyToken, generateTokenInspector}

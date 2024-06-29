@@ -43,6 +43,13 @@ model Personal {
   categoria      Int?
   fechaIngreso   DateTime?
   reclamos       Reclamos[]
+  personalMail PersonalMail[]
+}
+
+model PersonalMail {
+  legajo Int @id
+  mail String
+  legajoPersonal Personal @relation(fields: [legajo], references: [legajo])
 }
 
 // Definición de la tabla sitios
