@@ -2,7 +2,7 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 import path from "path";
 
-const postDenuncia = async (documento, idSitio, descripcion, aceptaResponsabilidad) => {
+const postDenuncia = async (documento, idSitio, descripcion, aceptaResponsabilidad, idDenunciaPruebas) => {
 
     const nuevaDenuncia = await prisma.Denuncias.create({
         data: {
@@ -10,7 +10,8 @@ const postDenuncia = async (documento, idSitio, descripcion, aceptaResponsabilid
             idSitio: idSitio,
             descripcion: descripcion,
             aceptaResponsabilidad: aceptaResponsabilidad,
-            estado: 'Pendiente'
+            estado: 'Pendiente',
+            idDenunciaPruebas: idDenunciaPruebas
         },
       });
       return nuevaDenuncia
@@ -129,16 +130,16 @@ const getPrimerImagen = async (idDenuncia) => {
       idDenuncias: idDenuncia
     },
     select: {
-      idDenunciaImagen: true
+      idDenunciaPruebas: true
     }
   });
 
-  const idDenunciaImagen = denuncia.idDenunciaImagen
+  const idDenunciaPruebas = denuncia.idDenunciaPruebas
 
   const directorioBase  = path.resolve();
-  const nombreImagen = idDenunciaImagen + "-1.jpg"
+  const nombreImagen = idDenunciaPruebas + "-1.jpg"
     
-  const rutaImagen = path.join(directorioBase, 'imagenes', 'denuncias', idDenunciaImagen, nombreImagen );
+  const rutaImagen = path.join(directorioBase, 'imagenes', 'denuncias', idDenunciaPruebas, nombreImagen );
   console.log(rutaImagen)
   return rutaImagen
 }
@@ -149,15 +150,15 @@ const getImagenes = async (idDenuncia, numeroImagen) => {
       idDenuncias: idDenuncia
     },
     select: {
-      idDenunciaImagen: true
+      idDenunciaPruebas: true
     }
   });
-  const idDenunciaImagen = denuncia.idDenunciaImagen
+  const idDenunciaPruebas = denuncia.idDenunciaPruebas
 
   const directorioBase  = path.resolve();
-  const nombreImagen = idDenunciaImagen + "-" + numeroImagen + ".jpg"
+  const nombreImagen = idDenunciaPruebas + "-" + numeroImagen + ".jpg"
   console.log(nombreImagen)
-  const rutaImagen = path.join(directorioBase, 'imagenes', 'denuncias', idDenunciaImagen, nombreImagen );
+  const rutaImagen = path.join(directorioBase, 'imagenes', 'denuncias', idDenunciaPruebas, nombreImagen );
   console.log(rutaImagen)
   return rutaImagen
 }
@@ -165,7 +166,22 @@ const getImagenes = async (idDenuncia, numeroImagen) => {
 
 //Manejo de archivos
 const getZipArchivos = async (idDenuncia) => {
-    return idDenuncia
+  const denuncia = await prisma.Denuncias.findUnique({
+    where: {
+      idDenuncias: idDenuncia
+    },
+    select: {
+      idDenunciaPruebas: true
+    }
+  });
+  const idDenunciaPruebas = denuncia.idDenunciaPruebas
+
+  const directorioBase  = path.resolve();
+  const nombreZip = idDenunciaPruebas + ".zip"
+  console.log(nombreZip)
+  const rutaZip = path.join(directorioBase, 'imagenes', 'denuncias', idDenunciaPruebas, nombreZip);
+  console.log(rutaZip)
+  return rutaZip
 }
 
-export default {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, getEstadoDenuncia, cambiarEstadoDenuncia}
+export default {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, getEstadoDenuncia, cambiarEstadoDenuncia, getPrimerImagen, getImagenes, getZipArchivos}
