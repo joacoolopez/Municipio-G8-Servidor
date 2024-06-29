@@ -18,7 +18,7 @@ const storage = multer.diskStorage({
      // Asignar el ID del servicio a la solicitud
 
     // Crear la carpeta de destino para el servicio si no existe
-    const carpetaDestino = path.join(directorioBase, 'imagenes', 'comercios', comercio);
+    const carpetaDestino = path.join(directorioBase, 'imagenes', 'comercios', req.body.idComercio);
     if (!fs.existsSync(carpetaDestino)) {
       fs.mkdirSync(carpetaDestino, { recursive: true });
     }
