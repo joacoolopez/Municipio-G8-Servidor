@@ -80,6 +80,26 @@ const cambiarEstadoDenuncia = async (req, res) => {
 }
 
 
+//El municipio deriva la denuncia al deartamento legal en primera instancia, ellos actualizan y se registra en movimientosDenuncia
+const postMovimientoDenuncia = async (req, res) => {
+    try {
+        const idDenuncia = parseInt(req.params.idDenuncia)
+
+        const estadoDenuncia = await denuncias.getEstadoDenuncia(idDenuncia)
+        if (estadoDenuncia.estado == "Cerrado") {
+            res.status(400).send("No se puede derivar una denuncia cerrado")
+        }
+        else{
+            const { responsable, causa } = req.body
+            const response = await denuncias.postMovimientoDenuncia(idDenuncia, responsable, causa)
+            res.status(201).send(response)
+        }
+    } catch (error) {
+        console.log(error)
+        res.status(400).send(error)
+    }
+}
+
 //Manejo de imagenes
 const getPrimerImagen = async (req, res) => {
     try {
@@ -115,4 +135,4 @@ const getZipArchivos = async (req, res) => {
 
 
 
-export {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, cambiarEstadoDenuncia, getPrimerImagen, getImagenes, getZipArchivos}
+export {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, cambiarEstadoDenuncia, postMovimientoDenuncia, getPrimerImagen, getImagenes, getZipArchivos}

@@ -51,8 +51,14 @@ const getDenuncias = async () => {
                 ubicacionHecho: true
             }
         },
-    }
-  });
+        movimientoDenuncia: {
+          select: {
+            responsable: true,
+            causa: true,
+            fecha: true
+          }
+        }
+  }});
 
   return denuncias
 }
@@ -95,7 +101,13 @@ const getDenunciaById = async (idDenuncia) => {
               ubicacionHecho: true
           }
       },
-    }
+      movimientosDenuncia: {
+        select: {
+          responsable: true,
+          causa: true,
+          fecha: true
+        }
+    }}
   });
   return denuncia
 }
@@ -150,6 +162,18 @@ const cambiarEstadoDenuncia = async (idDenuncia, nuevoEstado) => {
     });
     return denuncia
   }
+
+  const postMovimientoDenuncia = async (idDenuncia, responsable, causa) => {
+    
+    const movimientoDenuncia = await prisma.MovimientosDenuncia.create({
+      data: {
+        idDenuncia: idDenuncia,
+        responsable: responsable,
+        causa: causa
+      }
+    });
+    return movimientoDenuncia
+  }  
 
 
 //Manejo de imagenes
@@ -213,4 +237,4 @@ const getZipArchivos = async (idDenuncia) => {
   return rutaZip
 }
 
-export default {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, getEstadoDenuncia, cambiarEstadoDenuncia, getPrimerImagen, getImagenes, getZipArchivos}
+export default {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, getEstadoDenuncia, cambiarEstadoDenuncia, postMovimientoDenuncia, getPrimerImagen, getImagenes, getZipArchivos}
