@@ -41,10 +41,20 @@ const getReclamos = async () => {
           causa: true,
           fecha: true
         }
+      },
+      desperfectos: {
+        select: {
+          descripcion: true,
+          rubro: {
+            select: {
+              idRubro: true,
+              descripcion: true
+            }
+          },
+        },
+        
       }
-
-    }
-  });
+  }});
   return reclamos
 }
 
