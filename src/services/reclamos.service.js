@@ -24,17 +24,7 @@ const postReclamo = async (documentoVecino, legajoInspector, idSitio, idDesperfe
 }
 
 const getReclamos = async () => {
-
-  const whereClause = {};
-  if (idSitio) {
-      whereClause.idSitio = idSitio;
-  }
-  if (idDesperfecto) {
-      whereClause.idDesperfecto = idDesperfecto;
-  }
-
   const reclamos = await prisma.Reclamos.findMany({
-    where: whereClause,
     select: {
       sitios: {
         select: {
