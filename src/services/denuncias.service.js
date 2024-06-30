@@ -42,10 +42,13 @@ const getDenuncias = async () => {
   const denuncias = await prisma.Denuncias.findMany({
     select: {
         idDenuncias: true,
+        descripcion: true,
+        estado: true,
         denunciaDenunciado: {
             select: {
                 nombre: true,
-                direccion: true
+                direccion: true,
+                ubicacionHecho: true
             }
         },
     }
