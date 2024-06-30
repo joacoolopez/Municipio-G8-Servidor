@@ -39,9 +39,10 @@ const getComercioById = async (req, res) => {
 const habilitarComercio = async (req, res) => {
     try{
         const idComercio = req.params.idComercio
-        const response = await comercios.habilitar(idComercio)
+        const response = await comercios.habilitarComercio(idComercio)
         res.send(response)
     } catch(error){
+        console.log(error)
         res.send(error)
     }
 }

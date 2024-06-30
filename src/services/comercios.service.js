@@ -69,15 +69,18 @@ return comercio
 
 //habilitar el comercio
 const habilitarComercio = async (idComercio) => {
-    const existeComercio = await prisma.VecinoComercios.findUnique({
+    const existeComercio = await prisma.vecinoComercios.findUnique({
         where: {
             idComercio: idComercio
+        },
+        include: {
+            vecinos: true // Incluimos la relación con Vecinos para obtener el documento del vecino
         }
     })
     if (!existeComercio){
         "COMERCIO_NOT_EXIST"
     }
-    const comercioModificado = await prisma.VecinoComercios.update({
+    const comercioModificado = await prisma.vecinoComercios.update({
         where: {
             idComercio: idComercio
         },
@@ -85,6 +88,17 @@ const habilitarComercio = async (idComercio) => {
             habilitado: true
         }
     })
+    console.log(existeComercio)
+    
+    await prisma.notificaciones.create({
+        data: {
+            documentoVecino: existeComercio.vecinos.documento,
+            legajo: null,
+            descripcion: `El comercio ${existeComercio.nombreComercio} ha sido habilitado.`,
+            fecha: new Date(),
+        }
+    });
+
     return comercioModificado
 }
 

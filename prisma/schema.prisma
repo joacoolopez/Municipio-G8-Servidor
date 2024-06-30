@@ -44,6 +44,8 @@ model Personal {
   fechaIngreso   DateTime?
   reclamos       Reclamos[]
   personalMail PersonalMail[]
+  notificaciones Notificaciones[]
+
 }
 
 model PersonalMail {
@@ -164,6 +166,7 @@ model VecinoUser {
   habilitado Boolean @default(false)
   passwordActiva Boolean @default(false)
   vecinos Vecinos @relation(fields: [documentoVecino], references: [documento])
+  notificaciones Notificaciones[]
 
 }
 
@@ -199,4 +202,14 @@ model RubrosMercados {
   idRubroMercado Int @id @default(autoincrement())
   descripcion String
   vecinoServicios VecinoServicios[] 
+}
+
+model Notificaciones {
+  id               Int       @id @default(autoincrement())
+  documentoVecino     String?
+  legajo         Int?
+  fecha            DateTime  @default(now())
+  descripcion      String
+  vecino           VecinoUser?   @relation(fields: [documentoVecino], references: [documentoVecino])
+  inspector        Personal?  @relation(fields: [legajo], references: [legajo])
 }

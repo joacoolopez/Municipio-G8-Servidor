@@ -112,6 +112,9 @@ const habilitar = async (idServicio) => {
   const servicioExiste = await prisma.vecinoServicios.findUnique({
     where:{
       idServicio: idServicio
+    },
+    include: {
+        vecinos: true // Incluimos la relación con Vecinos para obtener el documento del vecino
     }
   })
 
@@ -127,6 +130,15 @@ const habilitar = async (idServicio) => {
       habilitado: true
     }
   })
+
+  await prisma.notificaciones.create({
+    data: {
+        documentoVecino: servicioExiste.vecinos.documento,
+        legajo: null,
+        descripcion: `El servicio ${servicioExiste.tituloServicio} ha sido habilitado.`,
+        fecha: new Date(),
+    }
+});
 
   return servicioModificado
 }
