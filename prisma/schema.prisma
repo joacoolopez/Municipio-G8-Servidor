@@ -127,7 +127,17 @@ model Denuncias {
   aceptaResponsabilidad Int
   vecinos               Vecinos     @relation(fields: [documento], references: [documento])
   sitios                Sitios?     @relation(fields: [idSitio], references: [idSitio])
+  denunciaDenunciado    DenunciaDenunciado[]
   movimientosDenuncia   MovimientosDenuncia[]
+}
+
+//Definicion de la tabla denunciaDenunciado - ubicacionHecho va a ser rellenado si se trata de denuncia a vecino 
+model DenunciaDenunciado {
+  idDenunciaDenunciado    Int                @id
+  nombre                  String
+  direccion               String
+  ubicacionHecho          String?
+  denunciaDenunciado      Denuncias @relation(fields: [idDenunciaDenunciado], references: [idDenuncias])
 }
 
 // Definición de la tabla movimientosDenuncia
