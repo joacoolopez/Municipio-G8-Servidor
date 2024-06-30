@@ -33,7 +33,17 @@ const getReclamos = async () => {
         },
       },
       idReclamo: true,
-      idReclamoImagen: true
+      idReclamoImagen: true,
+      estado: true,
+      descripcion: true,
+      movimientosReclamo:{
+        select: {
+          responsable: true,
+          causa: true,
+          fecha: true
+        }
+      }
+
     }
   });
   return reclamos
