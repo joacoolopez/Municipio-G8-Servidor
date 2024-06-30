@@ -3,8 +3,8 @@ import denuncias from '../services/denuncias.service.js';
 const postDenuncia = async (req, res) => {
     console.log(req.body)
     try {
-        const {documento, idSitio, descripcion, aceptaResponsabilidad, idDenunciaPruebas, nombre, direccion, ubicacionHecho} = req.body
-        const response = await denuncias.postDenuncia(documento, parseInt(idSitio), descripcion, parseInt(aceptaResponsabilidad), idDenunciaPruebas, nombre, direccion, ubicacionHecho)
+        const {documentoVecino, idSitio, descripcion, aceptaResponsabilidad, idDenunciaPruebas, nombre, direccion, ubicacionHecho} = req.body
+        const response = await denuncias.postDenuncia(documentoVecino, parseInt(idSitio), descripcion, Boolean(aceptaResponsabilidad), idDenunciaPruebas, nombre, direccion, ubicacionHecho)
         res.status(201).send(response)
     } catch (error) {
         console.log(error)
@@ -53,6 +53,17 @@ const getDenunciasByVecino = async (req, res) => {
         res.status(200).send(response)
     } catch (error) {
         console.log(error)
+        res.status(400).send(error)
+    }
+}
+
+
+const getDenunciasRecibidas = async (req, res) => {
+    try {
+        const documento = req.params.documento
+        const response = await denuncias.getDenunciasRecibidas(documento)
+        res.status(200).send(response)
+    } catch (error) {
         res.status(400).send(error)
     }
 }
@@ -135,4 +146,4 @@ const getZipArchivos = async (req, res) => {
 
 
 
-export {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, cambiarEstadoDenuncia, postMovimientoDenuncia, getPrimerImagen, getImagenes, getZipArchivos}
+export {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, getDenunciasRecibidas, cambiarEstadoDenuncia, postMovimientoDenuncia, getPrimerImagen, getImagenes, getZipArchivos}

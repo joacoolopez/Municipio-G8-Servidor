@@ -1,11 +1,11 @@
 import { Router } from "express";
-import {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, cambiarEstadoDenuncia, postMovimientoDenuncia, getPrimerImagen, getImagenes, getZipArchivos} from '../controllers/denuncias.controller.js'
+import {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, getDenunciasRecibidas, cambiarEstadoDenuncia, postMovimientoDenuncia, getPrimerImagen, getImagenes, getZipArchivos} from '../controllers/denuncias.controller.js'
 import { upload, crearZip } from '../middlewares/multerConfigDenuncias.js'
 import {authMiddleware} from '../middlewares/auth.js'; 
 
 const router = Router()
 
-router.post("/post", authMiddleware, upload.array('files'), async (req, res, next) => {
+router.post("/post", authMiddleware, upload.array('archivos'), async (req, res, next) => {
     try {
       await crearZip(req.body.idDenunciaPruebas);
       await postDenuncia(req, res, next);
@@ -18,6 +18,7 @@ router.get("/getDenuncias", getDenuncias)
 router.get("/getDenunciaById/:idDenuncia", getDenunciaById)
 router.get("/getDenunciaParcialById/:idDenuncia", getDenunciaParcialById)
 router.get("/getDenunciasByVecino/:documento", getDenunciasByVecino)
+router.get("/getDenunciasRecibidas/:documento", getDenunciasRecibidas)
 router.patch("/cambiarEstadoDenuncia/:idDenuncia", cambiarEstadoDenuncia)
 router.post("/postMovimientoDenuncia/:idDenuncia", postMovimientoDenuncia)
 router.get("/getPrimerImagen/:idDenuncia", getPrimerImagen)

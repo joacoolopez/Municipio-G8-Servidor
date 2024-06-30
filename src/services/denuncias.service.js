@@ -2,12 +2,12 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 import path from "path";
 
-const postDenuncia = async (documento, idSitio, descripcion, aceptaResponsabilidad, idDenunciaPruebas, nombre, direccion, ubicacionHecho) => {
+const postDenuncia = async (documentoVecino, idSitio, descripcion, aceptaResponsabilidad, idDenunciaPruebas, nombre, direccion, ubicacionHecho) => {
   try {
     // Crear la denuncia primero
     const nuevaDenuncia = await prisma.Denuncias.create({
         data: {
-            documento: documento,
+            documento: documentoVecino,
             idSitio: idSitio,
             descripcion: descripcion,
             aceptaResponsabilidad: aceptaResponsabilidad,
@@ -141,6 +141,50 @@ const getDenunciasByVecino = async (documento) => {
   return denuncias
 }
 
+const getDenunciasRecibidas = async (documento) => {
+  
+    const denunciasDenunciado = await prisma.DenunciaDenunciado.findMany({
+      select: {
+        idDenunciaDenunciado: true,
+        documento: true,
+      },
+      where: {
+        documento: documento
+      }
+    });
+
+    const idsDenunciasRecibidas = denunciasDenunciado.map(denuncia => denuncia.idDenunciaDenunciado);
+
+    const denunciasRecibidas = await prisma.Denuncias.findMany({
+      select: {
+        idDenuncias: true,
+        descripcion: true,
+        estado: true,
+        denunciaDenunciado: {
+            select: {
+                nombre: true,
+                direccion: true,  
+            }
+        },
+        movimientosDenuncia: {
+          select: {
+            responsable: true,
+            causa: true,
+            fecha: true
+          }
+        }
+    },
+      where: {
+        idDenuncias: {
+          in: idsDenunciasRecibidas
+        }
+      }
+    });
+    return denunciasRecibidas
+  }
+
+
+
 
 const getEstadoDenuncia = async (idDenuncia) => {
     
@@ -244,4 +288,4 @@ const getZipArchivos = async (idDenuncia) => {
   return rutaZip
 }
 
-export default {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, getEstadoDenuncia, cambiarEstadoDenuncia, postMovimientoDenuncia, getPrimerImagen, getImagenes, getZipArchivos}
+export default {postDenuncia, getDenuncias, getDenunciaParcialById, getDenunciaById, getDenunciasByVecino, getDenunciasRecibidas, getEstadoDenuncia, cambiarEstadoDenuncia, postMovimientoDenuncia, getPrimerImagen, getImagenes, getZipArchivos}
