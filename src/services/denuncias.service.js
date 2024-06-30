@@ -42,14 +42,15 @@ const getDenuncias = async () => {
   const denuncias = await prisma.Denuncias.findMany({
     select: {
         idDenuncias: true,
-        sitios: {
+        denunciaDenunciado: {
             select: {
-                descripcion: true,
+                nombre: true,
+                direccion: true
             }
         },
-        idDenuncias: true,
     }
   });
+
   return denuncias
 }
 
@@ -58,12 +59,13 @@ const getDenunciaParcialById = async (idDenuncia) => {
 
   const denuncia = await prisma.Denuncias.findMany({
     select: {
-      sitios: {
-        select: {
-          descripcion: true,
-        },
+      idDenuncias: true,
+      denunciaDenunciado: {
+          select: {
+              nombre: true,
+              direccion: true
+          }
       },
-      idDenuncias: true
     },
     where: {
       idDenuncias: idDenuncia
@@ -81,13 +83,15 @@ const getDenunciaById = async (idDenuncia) => {
     },
     select: {
       idDenuncias: true,
-      estado: true,
-      sitios: {
-        select: {
-          descripcion: true,
-        },
-      },
       descripcion: true,
+      estado: true,
+      denunciaDenunciado: {
+          select: {
+              nombre: true,
+              direccion: true,
+              ubicacionHecho: true
+          }
+      },
     }
   });
   return denuncia
@@ -98,12 +102,15 @@ const getDenunciasByVecino = async (documento) => {
 
   const denuncias = await prisma.Denuncias.findMany({
     select: {
-      sitios: {
-        select: {
-          descripcion: true,
-        },
+      idDenuncias: true,
+      descripcion: true,
+      denunciaDenunciado: {
+          select: {
+              nombre: true,
+              direccion: true,
+              ubicacionHecho: true
+          }
       },
-        idDenuncias: true,
     },
     where: {
       documento: documento
