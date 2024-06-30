@@ -51,7 +51,7 @@ const getDenuncias = async () => {
                 ubicacionHecho: true
             }
         },
-        movimientoDenuncia: {
+        movimientosDenuncia: {
           select: {
             responsable: true,
             causa: true,
