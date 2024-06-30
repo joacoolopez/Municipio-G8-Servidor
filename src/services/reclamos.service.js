@@ -13,7 +13,7 @@ const postReclamo = async (documentoVecino, legajoInspector, idSitio, idDesperfe
         data: {
             idReclamoImagen: idReclamoImagen,
             documento: documentoVecino,
-            legajo: legajoInspector,
+            legajo: parseInt(legajoInspector),
             idSitio: idSitio,
             idDesperfecto: idDesperfecto,
             descripcion: descripcion,
