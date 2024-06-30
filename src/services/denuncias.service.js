@@ -119,6 +119,7 @@ const getDenunciasByVecino = async (documento) => {
     select: {
       idDenuncias: true,
       descripcion: true,
+      estado: true,
       denunciaDenunciado: {
           select: {
               nombre: true,
@@ -126,7 +127,13 @@ const getDenunciasByVecino = async (documento) => {
               ubicacionHecho: true
           }
       },
-    },
+      movimientosDenuncia: {
+        select: {
+          responsable: true,
+          causa: true,
+          fecha: true
+        }
+    }},
     where: {
       documento: documento
     }
