@@ -126,7 +126,7 @@ model Denuncias {
   idSitio               Int?
   descripcion           String?
   estado                String?
-  aceptaResponsabilidad Int
+  aceptaResponsabilidad Boolean
   vecinos               Vecinos     @relation(fields: [documento], references: [documento])
   sitios                Sitios?     @relation(fields: [idSitio], references: [idSitio])
   denunciaDenunciado    DenunciaDenunciado[]
@@ -139,6 +139,7 @@ model DenunciaDenunciado {
   nombre                  String
   direccion               String
   ubicacionHecho          String?
+  documento               String?
   denunciaDenunciado      Denuncias @relation(fields: [idDenunciaDenunciado], references: [idDenuncias])
 }
 
