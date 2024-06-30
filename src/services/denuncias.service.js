@@ -2,8 +2,9 @@ import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 import path from "path";
 
-const postDenuncia = async (documento, idSitio, descripcion, aceptaResponsabilidad, idDenunciaPruebas) => {
-
+const postDenuncia = async (documento, idSitio, descripcion, aceptaResponsabilidad, idDenunciaPruebas, nombre, direccion, ubicacionHecho) => {
+  try {
+    // Crear la denuncia primero
     const nuevaDenuncia = await prisma.Denuncias.create({
         data: {
             documento: documento,
@@ -13,9 +14,27 @@ const postDenuncia = async (documento, idSitio, descripcion, aceptaResponsabilid
             estado: 'Pendiente',
             idDenunciaPruebas: idDenunciaPruebas
         },
-      });
-      return nuevaDenuncia
+    });
+
+    const idDenuncias = nuevaDenuncia.idDenuncias
+    console.log(nuevaDenuncia.idDenuncias)
+    // Utilizar el id de la denuncia creada para crear el registro en DenunciaDenunciados
+    const nuevaDenunciaDenunciado = await prisma.DenunciaDenunciado.create({
+        data: {
+            idDenunciaDenunciado: idDenuncias, // Utiliza nuevaDenuncia.id si es el id generado automáticamente
+            nombre: nombre,
+            direccion: direccion,
+            ubicacionHecho: ubicacionHecho
+        },
+    });
+
+    return { nuevaDenuncia, nuevaDenunciaDenunciado };
+    
+} catch (error) {
+    console.error("Error al crear la denuncia y el denunciado:", error);
+    throw error;
 }
+};
 
 
 const getDenuncias = async () => {

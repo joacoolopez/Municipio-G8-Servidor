@@ -3,8 +3,8 @@ import denuncias from '../services/denuncias.service.js';
 const postDenuncia = async (req, res) => {
     console.log(req.body)
     try {
-        const {documento, idSitio, descripcion, aceptaResponsabilidad, idDenunciaPruebas} = req.body
-        const response = await denuncias.postDenuncia(documento, parseInt(idSitio), descripcion, parseInt(aceptaResponsabilidad), idDenunciaPruebas)
+        const {documento, idSitio, descripcion, aceptaResponsabilidad, idDenunciaPruebas, nombre, direccion, ubicacionHecho} = req.body
+        const response = await denuncias.postDenuncia(documento, parseInt(idSitio), descripcion, parseInt(aceptaResponsabilidad), idDenunciaPruebas, nombre, direccion, ubicacionHecho)
         res.status(201).send(response)
     } catch (error) {
         console.log(error)
