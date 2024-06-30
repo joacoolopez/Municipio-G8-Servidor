@@ -178,6 +178,36 @@ try {
  }
 
 
+ //GET SITIOS
+ const getSitios = async (req, res) => {
+    try{
+        const response = await reclamos.getSitios()
+        res.status(200).send(response)
+    }catch (error){
+        res.status(400).send({ error: "Hubo un error al procesar la solicitud." })
+    }
+ }
+
+ //GET RUBROS
+ const getRubros = async (req, res) => {
+    try{
+        const response = await reclamos.getRubros()
+        res.status(200).send(response)
+    }catch (error){
+        res.status(400).send({ error: "Hubo un error al procesar la solicitud." })
+    }
+ }
+
+  //GET DESPERFECTOS
+  const getDesperfectos = async (req, res) => {
+    try{
+        const response = await reclamos.getDesperfectos()
+        res.status(200).send(response)
+    }catch (error){
+        res.status(400).send({ error: "Hubo un error al procesar la solicitud." })
+    }
+ }
 
 
-export {postReclamo, getReclamos, getReclamoById, getReclamoParcialById, getReclamosByVecino, getReclamosByInspector, getReclamosByRubro, cambiarEstadoReclamo, getMovimientosReclamo, postMovimientoReclamo, unificarReclamos, getPrimerImagen, getImagenes}
+export { cambiarEstadoReclamo, getDesperfectos, getImagenes, getMovimientosReclamo, getPrimerImagen, getReclamoById, getReclamoParcialById, getReclamos, getReclamosByInspector, getReclamosByRubro, getReclamosByVecino, getRubros, getSitios, postMovimientoReclamo, postReclamo, unificarReclamos };
+

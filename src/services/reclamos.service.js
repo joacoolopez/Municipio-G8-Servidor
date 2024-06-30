@@ -1,6 +1,6 @@
-import { PrismaClient } from "@prisma/client"
-const prisma = new PrismaClient()
+import { PrismaClient } from "@prisma/client";
 import path from "path";
+const prisma = new PrismaClient()
 
 
 prisma.$connect()
@@ -25,7 +25,16 @@ const postReclamo = async (documentoVecino, legajoInspector, idSitio, idDesperfe
 
 const getReclamos = async () => {
 
+  const whereClause = {};
+  if (idSitio) {
+      whereClause.idSitio = idSitio;
+  }
+  if (idDesperfecto) {
+      whereClause.idDesperfecto = idDesperfecto;
+  }
+
   const reclamos = await prisma.Reclamos.findMany({
+    where: whereClause,
     select: {
       sitios: {
         select: {
@@ -271,4 +280,46 @@ const getImagenes = async (idReclamo, numeroImagen) => {
   return rutaImagen
 }
 
-export default {postReclamo, getReclamos, getReclamoById, getReclamoParcialById, getReclamosByVecino, getReclamosByInspector, getReclamosByRubro, getEstadoReclamo, cambiarEstadoReclamo, postMovimientoReclamo, getMovimientosReclamo, patchIdReclamoUnificado, getPrimerImagen, getImagenes}
+//GET SITIOS
+
+const getSitios = async () =>{
+
+  const sitiosget = await prisma.sitios.findMany({
+    select: {
+      idSitio: true,
+      descripcion: true
+    },
+});
+  return sitiosget
+};
+
+// GET RUBROS
+const getRubros = async () =>{
+
+  const rubrosget = await prisma.rubros.findMany({
+    select: {
+      idRubro: true,
+      descripcion: true
+    },
+});
+  return rubrosget
+};
+
+// GET DESPERFECTOS
+const getDesperfectos = async (idRubro) =>{
+
+  const desperfectosget = await prisma.desperfectos.findMany({
+    select: {
+      idDesperfecto: true,
+      idRubro: true,
+      descripcion: true
+    },
+    where: {
+      idRubro : idRubro
+    }
+});
+  return desperfectosget
+};
+
+
+export default {postReclamo, getReclamos, getReclamoById, getReclamoParcialById, getReclamosByVecino, getReclamosByInspector, getReclamosByRubro, getEstadoReclamo, cambiarEstadoReclamo, postMovimientoReclamo, getMovimientosReclamo, patchIdReclamoUnificado, getPrimerImagen, getImagenes, getSitios , getRubros ,getDesperfectos}

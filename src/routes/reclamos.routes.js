@@ -1,7 +1,7 @@
 import { Router } from "express";
-import  {postReclamo, getReclamos, getReclamoById, getReclamoParcialById, getReclamosByVecino, getReclamosByInspector, getReclamosByRubro, cambiarEstadoReclamo, getMovimientosReclamo, postMovimientoReclamo, unificarReclamos, getPrimerImagen, getImagenes} from "../controllers/reclamos.controller.js";
-import {upload} from '../middlewares/multerConfigReclamos.js'; 
-import {authMiddleware} from '../middlewares/auth.js'; 
+import { cambiarEstadoReclamo, getDesperfectos, getImagenes, getMovimientosReclamo, getPrimerImagen, getReclamoById, getReclamoParcialById, getReclamos, getReclamosByInspector, getReclamosByRubro, getReclamosByVecino, getRubros, getSitios, postMovimientoReclamo, postReclamo, unificarReclamos } from "../controllers/reclamos.controller.js";
+import { authMiddleware } from '../middlewares/auth.js';
+import { upload } from '../middlewares/multerConfigReclamos.js';
 
 const router = Router()
 
@@ -19,5 +19,8 @@ router.post("/postMovimientoReclamo/:idReclamo", postMovimientoReclamo)
 router.patch("/unificarReclamos", unificarReclamos)
 router.get("/getPrimerImagen/:idReclamo", getPrimerImagen)
 router.get("/getImagenes/:idReclamo/:numeroImagen", getImagenes)
+router.get("/getSitios", getSitios)
+router.get("/getRubros", getRubros)
+router.get("/getDesperfectos", getDesperfectos)
 
 export default router
