@@ -1,7 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import path from "path";
 const prisma = new PrismaClient()
-import { enviarMailMovimientoReclamo, enviarMailCambioEstadoReclamo } from "../utils/mails.js";
+import { enviarMailMovimientoReclamo, enviarMailCambioEstadoReclamo, enviarMailUnificacionReclamo } from "../utils/mails.js";
 
 
 prisma.$connect()
@@ -322,6 +322,43 @@ const patchIdReclamoUnificado = async (idReclamo, idReclamoUnificador) => {
         IdReclamoUnificado: idReclamoUnificador
       }
     });
+
+    if (reclamo.documento){
+      await prisma.notificaciones.create({
+        data: {
+            documentoVecino: reclamo.documento,
+            legajo: null,
+            descripcion: `El reclamo #${idReclamo} ha sido unificado con el reclamo #${idReclamoUnificador}.`,
+            fecha: new Date(),
+        }
+    });
+
+    const user = await prisma.vecinoUser.findUnique({
+      where: {
+        documentoVecino: reclamo.documento
+      }
+    })
+
+    await enviarMailUnificacionReclamo(idReclamo, idReclamoUnificador, user.mail)
+    
+    }else{
+      await prisma.notificaciones.create({
+        data: {
+            documentoVecino: null,
+            legajo: reclamo.legajo,
+            descripcion: `El reclamo #${idReclamo} ha sido unificado con el reclamo #${idReclamoUnificador}.`,
+            fecha: new Date(),
+        }
+    });
+
+    const inspector = await prisma.personalMail.findUnique({
+      where: {
+        legajo: reclamo.legajo
+      }
+    })
+    await enviarMailUnificacionReclamo(idReclamo, idReclamoUnificador, inspector.mail)
+  }
+    
     return reclamo
   }
 

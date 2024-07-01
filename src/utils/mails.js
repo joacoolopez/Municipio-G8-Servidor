@@ -151,7 +151,23 @@ const enviarMailMovimientoDenuncia = async (idDenuncia, responsable, causa, mail
   });
 }
 
+const enviarMailUnificacionReclamo = async (idReclamo, idReclamoUnificador, mail) => {
+  const mailOptions = {
+    from: process.env.MAIL,
+    to: mail,
+    subject: `Tu reclamo #${idReclamo} ha sido unificado.`,
+    text: `Tu reclamo #${idReclamo} ha sido unificado con el reclamo #${idReclamoUnificador}.`,
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error al enviar el correo:', error);
+    } else {
+      console.log('Correo enviado:', info.response);
+    }
+  });
+}
 
 export {enviarMailHabilitado, enviarMailNoHabilitado, enviarMailRecuperarClave, enviarMailRecuperarClaveInspector,
-       enviarMailMovimientoReclamo, enviarMailCambioEstadoReclamo,
+       enviarMailMovimientoReclamo, enviarMailCambioEstadoReclamo, enviarMailUnificacionReclamo,
         enviarMailCambioEstadoDenuncia, enviarMailMovimientoDenuncia}
