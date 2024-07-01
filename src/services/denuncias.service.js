@@ -45,6 +45,7 @@ const getDenuncias = async () => {
         idDenuncias: true,
         descripcion: true,
         estado: true,
+        documento: true,
         denunciaDenunciado: {
             select: {
                 nombre: true,
