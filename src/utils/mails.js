@@ -156,7 +156,7 @@ const enviarMailUnificacionReclamo = async (idReclamo, idReclamoUnificador, mail
     from: process.env.MAIL,
     to: mail,
     subject: `Tu reclamo #${idReclamo} ha sido unificado.`,
-    text: `Tu reclamo #${idReclamo} ha sido unificado con el reclamo #${idReclamoUnificador}.`,
+    text: `Tu reclamo #${idReclamo} ha sido unificado con el numero de reclamo #${idReclamoUnificador}.`,
   };
   
   transporter.sendMail(mailOptions, (error, info) => {
