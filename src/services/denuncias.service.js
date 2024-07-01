@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client"
 const prisma = new PrismaClient()
 import path from "path";
+import { enviarMailCambioEstadoDenuncia, enviarMailMovimientoDenuncia } from "../utils/mails.js";
 
 const postDenuncia = async (documentoVecino, idSitio, descripcion, aceptaResponsabilidad, idDenunciaPruebas, nombre, direccion, ubicacionHecho) => {
   try {
@@ -211,6 +212,23 @@ const cambiarEstadoDenuncia = async (idDenuncia, nuevoEstado) => {
         estado: nuevoEstado
       }
     });
+
+    await prisma.notificaciones.create({
+      data: {
+          documentoVecino: denuncia.documento,
+          legajo: null,
+          descripcion: `Tu denuncia #${idDenuncia} ha cambiado de estado a: ${nuevoEstado}.`,
+          fecha: new Date(),
+      }
+  });
+
+  const user = await prisma.vecinoUser.findUnique({
+    where: {
+      documentoVecino: denuncia.documento
+    }
+  })
+  await enviarMailCambioEstadoDenuncia(idDenuncia, nuevoEstado, user.mail)
+
     return denuncia
   }
 
@@ -223,6 +241,28 @@ const cambiarEstadoDenuncia = async (idDenuncia, nuevoEstado) => {
         causa: causa
       }
     });
+
+    const denuncia = await prisma.denuncias.findUnique({
+      where:{
+        idDenuncias: idDenuncia
+      } 
+    })
+
+    await prisma.notificaciones.create({
+      data: {
+          documentoVecino: denuncia.documento,
+          legajo: null,
+          descripcion: `Tu denuncia #${idDenuncia} ha recibido una actualizacion.`,
+          fecha: new Date(),
+      }
+  });
+
+  const user = await prisma.vecinoUser.findUnique({
+    where: {
+      documentoVecino: denuncia.documento
+    }
+  })
+  await enviarMailMovimientoDenuncia(idDenuncia, responsable, causa, user.mail)
     return movimientoDenuncia
   }  
 

@@ -1,6 +1,7 @@
 import { PrismaClient } from "@prisma/client";
 import path from "path";
 const prisma = new PrismaClient()
+import { enviarMailMovimientoReclamo, enviarMailCambioEstadoReclamo } from "../utils/mails.js";
 
 
 prisma.$connect()
@@ -199,6 +200,46 @@ const cambiarEstadoReclamo = async (idReclamo, nuevoEstado) => {
         estado: nuevoEstado
       }
     });
+
+    if (reclamo.documento){
+      await prisma.notificaciones.create({
+        data: {
+            documentoVecino: reclamo.documento,
+            legajo: null,
+            descripcion: `El reclamo #${idReclamo} ha cambiado de estado a: ${nuevoEstado}.`,
+            fecha: new Date(),
+        }
+    });
+
+    const user = await prisma.vecinoUser.findUnique({
+      where: {
+        documentoVecino: reclamo.documento
+      }
+    })
+
+    await enviarMailCambioEstadoReclamo(idReclamo, nuevoEstado, user.mail)
+
+    }else{
+      await prisma.notificaciones.create({
+        data: {
+            documentoVecino: null,
+            legajo: reclamo.legajo,
+            descripcion: `El reclamo #${idReclamo} ha cambiado de estado a: ${nuevoEstado}.`,
+            fecha: new Date(),
+        }
+    });
+
+    const inspector = await prisma.personalMail.findUnique({
+      where: {
+        legajo: reclamo.legajo
+      }
+    })
+
+    await enviarMailCambioEstadoReclamo(idReclamo, nuevoEstado, inspector.mail)
+
+    }
+
+
     return reclamo
   }
 
@@ -212,6 +253,52 @@ const postMovimientoReclamo = async (idReclamo, responsable, causa) => {
         causa: causa
       }
     });
+
+    const reclamo = await prisma.reclamos.findUnique({
+      where: {
+        idReclamo: idReclamo
+      }
+    })
+    if (reclamo.documento){
+      await prisma.notificaciones.create({
+        data: {
+            documentoVecino: reclamo.documento,
+            legajo: null,
+            descripcion: `El reclamo #${idReclamo} ha recibido una actualizacion.`,
+            fecha: new Date(),
+        }
+    });
+
+    const user = await prisma.vecinoUser.findUnique({
+      where: {
+        documentoVecino: reclamo.documento
+      }
+    })
+
+    await enviarMailMovimientoReclamo(idReclamo, responsable, causa, user.mail)
+
+    }else{
+      await prisma.notificaciones.create({
+        data: {
+            documentoVecino: null,
+            legajo: reclamo.legajo,
+            descripcion: `El reclamo #${idReclamo} ha recibido una actualizacion.`,
+            fecha: new Date(),
+        }
+    });
+
+    const inspector = await prisma.personalMail.findUnique({
+      where: {
+        legajo: reclamo.legajo
+      }
+    })
+
+    await enviarMailMovimientoReclamo(idReclamo, responsable, causa, inspector.mail)
+
+    }
+
+    
+
     return movimientoReclamo
   }  
 

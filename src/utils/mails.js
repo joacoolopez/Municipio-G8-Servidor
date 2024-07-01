@@ -52,7 +52,7 @@ const enviarMailRecuperarClave = async (documento, mail, password) => {
   const mailOptions = {
     from: process.env.MAIL,
     to: mail,
-    subject: "Tu usuario ha sido cambiada.",
+    subject: "Tu clave ha sido modificada.",
     text: `A tu usuario con documento ${documento} se le ha generado la siguiente clave: ${password}.`,
   };
   
@@ -70,7 +70,7 @@ const enviarMailRecuperarClaveInspector = async (legajo, mail, password) => {
   const mailOptions = {
     from: process.env.MAIL,
     to: mail,
-    subject: "Tu usuario ha sido cambiada.",
+    subject: "Tu clave ha sido modificada.",
     text: `A tu usuario con legajo ${legajo} se le ha generado la siguiente clave: ${password}.`,
   };
   
@@ -83,7 +83,75 @@ const enviarMailRecuperarClaveInspector = async (legajo, mail, password) => {
   });
 }
 
+const enviarMailMovimientoReclamo = async (idReclamo, responsable, causa, mail) => {
+  const mailOptions = {
+    from: process.env.MAIL,
+    to: mail,
+    subject: `Tu reclamo #${idReclamo} ha recibido una actualizacion.`,
+    text: `${responsable} ha agregado "${causa}" a su reclamo.`,
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error al enviar el correo:', error);
+    } else {
+      console.log('Correo enviado:', info.response);
+    }
+  });
+}
+
+const enviarMailCambioEstadoReclamo = async (idReclamo, nuevoEstado, mail) => {
+  const mailOptions = {
+    from: process.env.MAIL,
+    to: mail,
+    subject: `Tu reclamo #${idReclamo} ha cambiado de estado.`,
+    text: `El reclamo #${idReclamo} ha cambiado de estado a: ${nuevoEstado}.`,
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error al enviar el correo:', error);
+    } else {
+      console.log('Correo enviado:', info.response);
+    }
+  });
+}
+
+const enviarMailCambioEstadoDenuncia = async (idDenuncia, nuevoEstado, mail) => {
+  const mailOptions = {
+    from: process.env.MAIL,
+    to: mail,
+    subject: `Tu denuncia #${idDenuncia} ha cambiado de estado.`,
+    text: `La denuncia #${idDenuncia} ha cambiado de estado a: ${nuevoEstado}.`,
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error al enviar el correo:', error);
+    } else {
+      console.log('Correo enviado:', info.response);
+    }
+  });
+}
+
+const enviarMailMovimientoDenuncia = async (idDenuncia, responsable, causa, mail) => {
+  const mailOptions = {
+    from: process.env.MAIL,
+    to: mail,
+    subject: `Tu denuncia #${idDenuncia} ha recibido una actualizacion.`,
+    text: `${responsable} ha agregado "${causa}" a su denuncia.`,
+  };
+  
+  transporter.sendMail(mailOptions, (error, info) => {
+    if (error) {
+      console.error('Error al enviar el correo:', error);
+    } else {
+      console.log('Correo enviado:', info.response);
+    }
+  });
+}
 
 
-
-export {enviarMailHabilitado, enviarMailNoHabilitado, enviarMailRecuperarClave, enviarMailRecuperarClaveInspector}
+export {enviarMailHabilitado, enviarMailNoHabilitado, enviarMailRecuperarClave, enviarMailRecuperarClaveInspector,
+       enviarMailMovimientoReclamo, enviarMailCambioEstadoReclamo,
+        enviarMailCambioEstadoDenuncia, enviarMailMovimientoDenuncia}
