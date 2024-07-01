@@ -154,6 +154,7 @@ const getReclamosByRubro = async (idRubro) => {
   const idsDesperfectos = desperfectosDelRubro.map(desperfecto => desperfecto.idDesperfecto);
 
   // Ahora, encuentra los reclamos asociados con los IDs de los desperfectos encontrados
+//nuevo
   const reclamos = await prisma.Reclamos.findMany({
     where: {
       idDesperfecto: {
@@ -161,14 +162,36 @@ const getReclamosByRubro = async (idRubro) => {
       }
     },
     select: {
-      idReclamo: true,
       sitios: {
         select: {
           descripcion: true,
+        },
+      },
+      idReclamo: true,
+      idReclamoImagen: true,
+      estado: true,
+      descripcion: true,
+      movimientosReclamo:{
+        select: {
+          responsable: true,
+          causa: true,
+          fecha: true
         }
+      },
+      desperfectos: {
+        select: {
+          descripcion: true,
+          rubro: {
+            select: {
+              idRubro: true,
+              descripcion: true
+            }
+          },
+        },
+        
       }
-    }
-  });
+  }});
+
 
   return reclamos
 }
