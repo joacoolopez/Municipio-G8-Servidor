@@ -21,5 +21,23 @@ const getNotificacionesVecino = async (documento) => {
     return {notificaciones}
 }
 
+const getNotificacionesInspector = async (legajo) => {
+    const notificaciones = await prisma.notificaciones.findMany({
+        where: {
+            legajo: legajo
+        },
+        select: {
+            id: true,
+            descripcion: true,
+            fecha:true
+        },
+        orderBy: {
+            fecha: 'desc'
+        }
+    });
 
-export default {getNotificacionesVecino}
+    return {notificaciones}
+}
+
+
+export default {getNotificacionesVecino, getNotificacionesInspector}

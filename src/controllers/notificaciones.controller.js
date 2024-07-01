@@ -2,8 +2,7 @@ import notificaciones from '../services/notificaciones.service.js';
 
 const getNotificacionesVecino = async (req, res) => {
     try {
-        console.log("a")
-        const {documento} = req.params.documento
+        const documento = req.params.documento
         const response = await notificaciones.getNotificacionesVecino(documento)
         res.status(200).send(response)
     } catch (error) {
@@ -12,4 +11,17 @@ const getNotificacionesVecino = async (req, res) => {
     }
 }
 
-export {getNotificacionesVecino}
+const getNotificacionesInspector = async (req, res) => {
+    try {
+        const legajo = req.params.legajo
+        console.log(legajo)
+        const response = await notificaciones.getNotificacionesInspector(parseInt(legajo))
+        console.log(response)
+        res.status(200).send(response)
+    } catch (error) {
+        console.log(error)
+        res.status(500).send(error)
+    }
+}
+
+export {getNotificacionesVecino, getNotificacionesInspector}
