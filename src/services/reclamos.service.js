@@ -369,7 +369,7 @@ const patchIdReclamoUnificado = async (idReclamo, idReclamoUnificador) => {
         data: {
             documentoVecino: null,
             legajo: reclamo.legajo,
-            descripcion: `El reclamo #${idReclamo}ha sido unificado con el numero de reclamo #${idReclamoUnificador}.`,
+            descripcion: `El reclamo #${idReclamo} ha sido unificado con el numero de reclamo #${idReclamoUnificador}.`,
             fecha: new Date(),
         }
     });
